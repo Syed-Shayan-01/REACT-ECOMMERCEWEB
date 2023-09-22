@@ -17,9 +17,6 @@ const products = [
 
 export default function Example() {
   const [fetchedData, setFetchedData] = useState([]);
-  if (!fetchedData) {
-    return <div>Loading ...</div>
-  }
 
   useEffect(() => {
     const fetchData = async () => {
