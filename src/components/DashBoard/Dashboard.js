@@ -1,26 +1,34 @@
+import { signOut } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { auth } from '../../config/firebase';
 // import Button from '../button/Button';
-
 const Dashboard = () => {
   const [title, setTitle] = useState('');
   const [productPrize, setProductPrize] = useState('');
   const [productImages, setProductImages] = useState('');
   const [productDetails, setProductDetails] = useState('');
+
+  const navigate = useNavigate();  // use use Navigate for Redirect Page
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('handleSubmit called');
 
-    const response = await fetch("https://react-project-77c23-default-rtdb.firebaseio.com/products.json",
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ title, productDetails, productImages, productPrize })
-      });
+    if (title && productDetails && productImages && productPrize) {
+      const response = await fetch("https://react-project-77c23-default-rtdb.firebaseio.com/products.json",
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ title, productDetails, productImages, productPrize })
+        });
+      if (response.ok) {
+        alert('Items Added Successfuly')
+      }
+    }
 
   }
-
   return (
     <>
       <form className='p-32' onSubmit={handleSubmit}>

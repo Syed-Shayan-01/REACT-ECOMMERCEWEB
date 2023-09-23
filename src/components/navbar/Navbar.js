@@ -3,9 +3,21 @@ import Logo from '../logo/Logo';
 import Button from '../button/Button';
 import { AiFillCloseCircle, AiOutlineMenu } from 'react-icons/ai'
 import List from '../list/List';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { signOut } from "firebase/auth";
+import { auth } from '../../config/firebase';
 function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const navigate = useNavigate();
+
+    const signOutSubmit = () => {
+
+        signOut(auth).then(() => {
+            navigate('/login')
+        }).catch((error) => {
+            // An error happened.
+        });
+    }
 
     return (
         <nav className="flex shadow-xl items-center justify-between flex-wrap p-6">
@@ -39,18 +51,19 @@ function Navbar() {
             >
                 <div className="flex  max-md:flex-col lg:flex-grow" >
                     <Link to={'/'}> <List itemText={"Dashboard"} /></Link>
-                   <Link to={'/home'}><List itemText={"Home"} /></Link> 
+                    <Link to={'/home'}><List itemText={"Home"} /></Link>
                     <List itemText={"Products"} />
                 </div>
 
                 {/* Login Button */}
-                <span>
-                    <Button btnText={"Login"} />
-                </span>
+                <Link to={'/login'}>
+                    <Button>Login</Button>
+                </Link>
 
+                <button onClick={signOutSubmit}>sign Out</button>
 
             </div>
-        </nav>
+        </nav >
     );
 }
 export default Navbar;
