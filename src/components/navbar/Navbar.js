@@ -4,8 +4,9 @@ import Button from '../button/Button';
 import { AiFillCloseCircle, AiOutlineMenu } from 'react-icons/ai'
 import List from '../list/List';
 import { Link, useNavigate } from 'react-router-dom';
-import { signOut } from "firebase/auth";
+
 import { auth } from '../../config/firebase';
+import { signOut } from 'firebase/auth';
 function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
