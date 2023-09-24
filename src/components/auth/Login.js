@@ -68,7 +68,7 @@ export default function Example() {
 
                         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                             <form className="space-y-6" action="#" method="POST" onSubmit={(e) => { formSubmit(e) }}>
-                                <div>
+                                <div>    {/* Email Form */}
                                     <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                                         Email address
                                     </label>
@@ -87,11 +87,13 @@ export default function Example() {
                                     focus:outline-pink-400  sm:text-sm sm:leading-6"
                                         />
                                     </div>
-                                </div>
+                                </div>   {/* End Email Form */}
 
+                                {/* Password Form */}
                                 <div>
                                     <div className="flex items-center justify-between">
-                                        <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                                        <label htmlFor="password" className="block text-sm font-medium
+                                         leading-6 text-gray-900">
                                             Password
                                         </label>
                                         <div className="text-sm">
@@ -116,11 +118,16 @@ export default function Example() {
                                         />
                                     </div>
                                 </div>
-
+                                {/* End Password Form */}
                                 <div>
                                     <button
                                         type="submit"
-                                        className="flex w-full justify-center rounded-md bg-pink-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600"
+                                        className="flex w-full justify-center rounded-md
+                                        bg-pink-600 px-3 py-1.5 text-sm font-semibold
+                                        leading-6 text-white shadow-sm hover:bg-pink-500
+                                        focus-visible:outline focus-visible:outline-2 
+                                        focus-visible:outline-offset-2
+                                        focus-visible:outline-pink-600"
                                     >
                                         Sign in
                                     </button>
@@ -133,8 +140,7 @@ export default function Example() {
                                     Sign up
                                 </Link>
                             </p>
-                        </div>
-                    </>
+                        </div> </>
                 }
             </div>
         </>
