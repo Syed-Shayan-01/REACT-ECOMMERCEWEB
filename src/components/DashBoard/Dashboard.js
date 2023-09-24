@@ -1,7 +1,4 @@
-import { signOut } from 'firebase/auth';
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { auth } from '../../config/firebase';
+import React, { useState } from 'react';
 // import Button from '../button/Button';
 const Dashboard = () => {
   const [title, setTitle] = useState('');
@@ -9,7 +6,7 @@ const Dashboard = () => {
   const [productImages, setProductImages] = useState('');
   const [productDetails, setProductDetails] = useState('');
 
-  const navigate = useNavigate();  // use use Navigate for Redirect Page
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('handleSubmit called');
