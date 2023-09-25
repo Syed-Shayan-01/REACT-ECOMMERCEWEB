@@ -23,7 +23,7 @@ function Navbar() {
     return (
         <nav className="flex shadow-xl items-center justify-between flex-wrap p-6">
             <div className="flex items-center mr-6 lg:mr-72">
-                <Logo text={"Blogger.Com"} />
+                <Logo text={"ECOMMERCE.COM"} />
             </div>
             <div className="block lg:hidden">
                 <button
