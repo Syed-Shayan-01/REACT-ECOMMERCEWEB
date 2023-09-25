@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+/* eslint-disable array-callback-return */
+import React, { useEffect, useRef, useState } from 'react';
 import Logo from '../logo/Logo';
 import Button from '../button/Button';
 import { AiFillCloseCircle, AiFillMinusCircle, AiFillPlusCircle, AiOutlineMenu, AiOutlineShoppingCart } from 'react-icons/ai'
@@ -21,6 +22,23 @@ function Navbar() {
         });
     }
 
+    const [CartData, setCartData] = useState([]);
+    useEffect(() => {
+        const products = async () => {
+            try {
+                const response = await fetch("https://react-project-77c23-default-rtdb.firebaseio.com/products.json");
+                const data = await response.json();
+
+                if (data) {
+                    const dataArray = Object.keys(data).map(key => ({ id: key, ...data[key] }));
+                    setCartData(dataArray);
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        products();
+    },);
     const ref = useRef();
     const crtControl = () => {
         if (ref.current.classList.contains("translate-x-full")) {
@@ -31,6 +49,7 @@ function Navbar() {
             ref.current.classList.add("translate-x-full");
         }
     };
+
     return (
         <nav className="flex shadow-xl items-center justify-between flex-wrap p-6">
             <div className="flex items-center mr-6 lg:mr-72">
@@ -75,9 +94,10 @@ function Navbar() {
                 </div>
 
                 {/* Side Bar */}
+
                 <div
                     ref={ref}
-                    className="w-96 z-10 h-full absolute rounded right-0 top-20 bg-pink-200 
+                    className="w-96 z-10 absolute rounded right-0 top-20 bg-pink-200 
                     transform px-7 py-10 
                     translate-x-full transition-transform"
                 >
@@ -88,32 +108,40 @@ function Navbar() {
                     >
                         <MdCancel />
                     </span>
+                    {CartData.length === 0 && <div className='p-4 font-bold'>Your Cart Data is Not Available!</div>}
                     <ol className="list-decimal ">
-                        <li>
-                            <div className="flex items-start mt-9 mr-2">
-                                <div className="w-2/3 text-start font-semibold">
-
-                                </div>
-                                <div className="inline-flex items-center justify-center">
-                                    <AiFillMinusCircle
-                                        className="mr-2 cursor-pointer"
-                                    />
-                                    1
-                                    <AiFillPlusCircle
-                                        className="ml-2 cursor-pointer"
-                                    />
-                                </div>
-                            </div>
-                            <div className="font-thin mt-2 flex items-center ">
-                                <span className="font-semibold">Price :</span>
-                                <button className=" absolute right-24 text-lg
+                        {CartData.map((k) => {
+                            return (
+                                <>
+                                    <li>
+                                        <div className="flex items-start mt-9 mr-2">
+                                            <div className="w-2/3 text-start font-semibold">
+                                                {CartData.title}
+                                            </div>
+                                            <div className="inline-flex items-center justify-center">
+                                                <AiFillMinusCircle
+                                                    
+                                                    className="mr-2 cursor-pointer"
+                                                />
+                                                1
+                                                <AiFillPlusCircle
+                                                    
+                                                    className="ml-2 cursor-pointer"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="font-thin mt-2 flex items-center ">
+                                            <span className="font-semibold">Price : ${CartData.productPrize}</span>
+                                            <button className=" absolute right-24 text-lg
                                     text-pink-500 ml-3 hover:text-black rounded
                                     hover:bg-pink-300 p-2">
-                                    <MdDeleteForever />
-                                </button>
-                            </div>
-                        </li>
-
+                                                <MdDeleteForever />
+                                            </button>
+                                        </div>
+                                    </li >
+                                </>
+                            )
+                        })}
                     </ol>
 
                     <button className=" text-white ml-3 bg-pink-500 rounded-md p-2 mt-3">
@@ -121,7 +149,7 @@ function Navbar() {
                     </button>
 
                     <button
-                        className=" text-white ml-3 bg-pink-500 rounded hover:bg-pink-300 p-2 mt-3"
+                        className="text-white ml-3 bg-pink-500 rounded hover:bg-pink-300 p-2 mt-3"
                     >
                         Clear Cart
                     </button>
