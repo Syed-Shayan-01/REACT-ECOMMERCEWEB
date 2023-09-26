@@ -2,26 +2,40 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Logo from '../logo/Logo';
 import Button from '../button/Button';
-import { AiFillCloseCircle, AiFillMinusCircle, AiFillPlusCircle, AiOutlineMenu, AiOutlineShoppingCart } from 'react-icons/ai'
+import {
+    AiFillCloseCircle, AiFillMinusCircle, AiFillPlusCircle,
+    AiOutlineMenu, AiOutlineShoppingCart
+} from 'react-icons/ai'
 import { MdCancel, MdDeleteForever } from 'react-icons/md'
 import List from '../list/List';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { auth } from '../../config/firebase';
-import { signOut } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const [user, setuser] = useState(null)
     const navigate = useNavigate();
 
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            setuser(user);
+            navigate('/')
+        } else {
+            setuser(null);
+        }
+    }, (error) => {
+        console.error("Error in onAuthStateChanged:", error);
+    });
     const signOutSubmit = () => {
 
         signOut(auth).then(() => {
+            setuser(null)
             navigate('/login')
         }).catch((error) => {
             // An error happened.
         });
     }
-
     const [CartData, setCartData] = useState([]);
     useEffect(() => {
         const products = async () => {
@@ -98,8 +112,8 @@ function Navbar() {
                 <div
                     ref={ref}
                     className="w-96 z-10 absolute rounded right-0 top-20 bg-pink-200 
-                    transform px-7 py-10 
-                    translate-x-full transition-transform"
+        transform px-7 py-10 
+        translate-x-full transition-transform"
                 >
                     <h2 className="text-xl font-bold text-center">Shopping Cart</h2>
                     <span
@@ -120,12 +134,12 @@ function Navbar() {
                                             </div>
                                             <div className="inline-flex items-center justify-center">
                                                 <AiFillMinusCircle
-                                                    
+
                                                     className="mr-2 cursor-pointer"
                                                 />
                                                 1
                                                 <AiFillPlusCircle
-                                                    
+
                                                     className="ml-2 cursor-pointer"
                                                 />
                                             </div>
@@ -133,8 +147,8 @@ function Navbar() {
                                         <div className="font-thin mt-2 flex items-center ">
                                             <span className="font-semibold">Price : ${CartData.productPrize}</span>
                                             <button className=" absolute right-24 text-lg
-                                    text-pink-500 ml-3 hover:text-black rounded
-                                    hover:bg-pink-300 p-2">
+                        text-pink-500 ml-3 hover:text-black rounded
+                        hover:bg-pink-300 p-2">
                                                 <MdDeleteForever />
                                             </button>
                                         </div>
@@ -155,11 +169,11 @@ function Navbar() {
                     </button>
                 </div>
                 {/* Login Button */}
-                <Link to={'/login'}>
-                    <Button>Login</Button>
-                </Link>
+                {user && <button onClick={signOutSubmit}>sign Out</button>}
 
-                <button onClick={signOutSubmit}>sign Out</button>
+                {!user && <Link to={'/login'}>
+                    <Button>Login</Button>
+                </Link>}
 
             </div>
         </nav >
