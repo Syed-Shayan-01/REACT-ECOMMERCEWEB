@@ -17,7 +17,7 @@ export default function Example() {
 
         signInWithEmailAndPassword(auth, Email, password)
             .then((userCredential) => {
-                // Signed n 
+                navigate('/')
             }).catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;

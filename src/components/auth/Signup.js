@@ -10,8 +10,6 @@ export default function Signup() {
     const [lastName, setlastName] = useState('')
     const [Email, setEmail] = useState('')
     const [password, setpassword] = useState('');
-
-    const [hideLogin, sethideLogin] = useState(null)
     const navigate = useNavigate();
 
     const formSubmit = (e) => {
@@ -21,7 +19,6 @@ export default function Signup() {
             createUserWithEmailAndPassword(auth, Email, password)
                 .then((userCredential) => {
                     // Signed in 
-                    sethideLogin(userCredential)
                     if(userCredential){
                      alert('success')
                     }

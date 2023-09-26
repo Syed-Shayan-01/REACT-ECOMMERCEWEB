@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [CartData, setCartData] = useState([]);
-    const [user, setAuth] = useState(null);
+    const [Auth, setAuth] = useState(null);
     const navigate = useNavigate();
     useEffect(() => {
         const products = async () => {
@@ -38,7 +38,6 @@ function Navbar() {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 setAuth(user);
-                navigate('/')
             } else {
                 setAuth(null);
             }
@@ -98,7 +97,7 @@ function Navbar() {
                     }`}
             >
                 <div className="flex  max-md:flex-col lg:flex-grow" >
-                    {user && <Link to={'/'}> <List itemText={"Dashboard"} /></Link>}
+                    {Auth && <Link to={'/dashboard'}> <List itemText={"Dashboard"} /></Link>}
                     <Link to={'/home'}><List itemText={"Home"} /></Link>
                     <List itemText={"Products"} />
                 </div>
@@ -172,9 +171,9 @@ function Navbar() {
                     </button>
                 </div>
                 {/* Login Button */}
-                {user && <button onClick={handleSignOut} >sign Out</button>}
+                {Auth && <button onClick={handleSignOut} >sign Out</button>}
 
-                {!user && <Link to={'/login'}>
+                {!Auth && <Link to={'/login'}>
                     <Button>Login</Button>
                 </Link>}
 
