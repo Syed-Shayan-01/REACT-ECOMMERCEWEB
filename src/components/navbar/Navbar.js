@@ -43,7 +43,7 @@ function Navbar() {
                 setAuth(null);
             }
         });
-    }, [])
+    },)
 
     const handleSignOut = () => {
         const auth = getAuth();
