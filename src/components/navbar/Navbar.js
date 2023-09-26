@@ -11,31 +11,10 @@ import List from '../list/List';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { auth } from '../../config/firebase';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
 function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
-    const [user, setuser] = useState(null)
     const navigate = useNavigate();
 
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            setuser(user);
-            navigate('/')
-        } else {
-            setuser(null);
-        }
-    }, (error) => {
-        console.error("Error in onAuthStateChanged:", error);
-    });
-    const signOutSubmit = () => {
-
-        signOut(auth).then(() => {
-            setuser(null)
-            navigate('/login')
-        }).catch((error) => {
-            // An error happened.
-        });
-    }
     const [CartData, setCartData] = useState([]);
     useEffect(() => {
         const products = async () => {
@@ -169,11 +148,11 @@ function Navbar() {
                     </button>
                 </div>
                 {/* Login Button */}
-                {user && <button onClick={signOutSubmit}>sign Out</button>}
+                <button >sign Out</button>
 
-                {!user && <Link to={'/login'}>
+                <Link to={'/login'}>
                     <Button>Login</Button>
-                </Link>}
+                </Link>
 
             </div>
         </nav >
