@@ -38,7 +38,7 @@ function Navbar() {
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 setAuth(user);
-                navigate('/dashboard')
+                navigate('/')
             } else {
                 setAuth(null);
             }
