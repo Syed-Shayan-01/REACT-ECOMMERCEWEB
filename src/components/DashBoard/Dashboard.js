@@ -9,7 +9,6 @@ const Dashboard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('handleSubmit called');
 
     if (title && productDetails && productImages && productPrize) {
       const response = await fetch("https://react-project-77c23-default-rtdb.firebaseio.com/products.json",

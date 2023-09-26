@@ -8,14 +8,15 @@ import {
 } from 'react-icons/ai'
 import { MdCancel, MdDeleteForever } from 'react-icons/md'
 import List from '../list/List';
-import { Link, useNavigate } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../../config/firebase';
+import { useNavigate } from 'react-router-dom';
 function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
-    const navigate = useNavigate();
-
     const [CartData, setCartData] = useState([]);
+    const [user, setAuth] = useState(null);
+    const navigate = useNavigate();
     useEffect(() => {
         const products = async () => {
             try {
@@ -32,6 +33,29 @@ function Navbar() {
         };
         products();
     },);
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setAuth(user);
+                navigate('/dashboard')
+            } else {
+                setAuth(null);
+            }
+        });
+    }, [])
+
+    const handleSignOut = () => {
+        const auth = getAuth();
+        signOut(auth)
+            .then(() => {
+                setAuth(null);
+                navigate('/login')
+            })
+            .catch((error) => {
+                console.error('Error signing out:', error);
+            });
+    };
     const ref = useRef();
     const crtControl = () => {
         if (ref.current.classList.contains("translate-x-full")) {
@@ -74,7 +98,7 @@ function Navbar() {
                     }`}
             >
                 <div className="flex  max-md:flex-col lg:flex-grow" >
-                    <Link to={'/'}> <List itemText={"Dashboard"} /></Link>
+                    {user && <Link to={'/'}> <List itemText={"Dashboard"} /></Link>}
                     <Link to={'/home'}><List itemText={"Home"} /></Link>
                     <List itemText={"Products"} />
                 </div>
@@ -148,11 +172,11 @@ function Navbar() {
                     </button>
                 </div>
                 {/* Login Button */}
-                <button >sign Out</button>
+                {user && <button onClick={handleSignOut} >sign Out</button>}
 
-                <Link to={'/login'}>
+                {!user && <Link to={'/login'}>
                     <Button>Login</Button>
-                </Link>
+                </Link>}
 
             </div>
         </nav >

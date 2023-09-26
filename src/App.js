@@ -5,6 +5,7 @@ import Navbar from './components/navbar/Navbar';
 import Home from './components/home/Home';
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
+import Index from './components/index';
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
       <BrowserRouter basename="/">
         <Navbar />
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<Index />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/home" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
