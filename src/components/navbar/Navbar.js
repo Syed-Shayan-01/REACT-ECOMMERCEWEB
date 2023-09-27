@@ -12,7 +12,12 @@ import { Link } from 'react-router-dom';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../../config/firebase';
 import { useNavigate } from 'react-router-dom';
-function Navbar() {
+function Navbar({ Cart,
+    addToCart,
+    clearCart,
+    deleteCart,
+    SubTotal,
+    removeCart, }) {
     const [isOpen, setIsOpen] = useState(false);
     const [CartData, setCartData] = useState([]);
     const [Auth, setAuth] = useState(null);
@@ -66,27 +71,6 @@ function Navbar() {
         }
     };
 
-    const increaseQuantity = (item) => {
-        const updatedCart = [...CartData];
-        const itemIndex = updatedCart.findIndex(i => i.id === item.id);
-        updatedCart[itemIndex].quantity += 1;
-        setCartData(updatedCart);
-    };
-
-    const decreaseQuantity = (item) => {
-        console.log(`Decreasing quantity for item with id ${item.id}`);
-        const updatedCart = [...CartData];
-        const itemIndex = updatedCart.find(i => i.id === item.id);
-        if (updatedCart[itemIndex].quantity > 1) {
-            updatedCart[itemIndex].quantity -= 1;
-        }
-        setCartData(updatedCart);
-    };
-
-    const removeFromCart = (itemId) => {
-        const updatedCart = CartData.find(item => item.id !== itemId);
-        setCartData(updatedCart);
-    };
     return (
         <nav className="flex shadow-xl items-center justify-between flex-wrap p-6">
             <div className="flex items-center mr-6 lg:mr-72">
@@ -95,18 +79,21 @@ function Navbar() {
             <div className="block lg:hidden">
                 <button
                     onClick={() => setIsOpen(!isOpen)}
-                    className="flex items-center px-3 py-2 rounded text-black-500 hover:text-black-400"
+                    className="flex items-center px-3 py-2 rounded text-black-500 
+                    hover:text-black-400"
                 >
                     <ol>
                         <li>
                             <AiOutlineMenu
-                                className={` text-black font-semibold text-lg hover:text-blue-400 ${isOpen ? "hidden" : "block"
+                                className={` text-black font-semibold text-lg
+                               hover:text-blue-400 ${isOpen ? "hidden" : "block"
                                     }`}
                             />
                         </li>
                         <li>
                             <AiFillCloseCircle
-                                className={` text-black font-semibold text-lg hover:text-blue-400 ${isOpen ? "block" : "hidden"
+                                className={` text-black font-semibold text-lg
+                                 hover:text-blue-400 ${isOpen ? "block" : "hidden"
                                     }`}
                             />
                         </li>
@@ -146,36 +133,50 @@ function Navbar() {
                         <MdCancel />
                     </span>
                     {CartData.length === 0 && <div className='p-4 font-bold'>Your Cart is Empty!</div>}
-                    <ol className="list-decimal">
-                        {CartData.map((item) => (
-                            <li key={item.id}>
-                                <div className="flex items-start mt-9 mr-2">
-                                    <div className="w-2/3 text-start font-semibold">
-                                        {item.title}
-                                    </div>
-                                    <div className="inline-flex items-center justify-center">
-                                        <AiFillMinusCircle
-                                            className="mr-2 cursor-pointer"
-                                            onClick={() => decreaseQuantity(item)}
-                                        />
-                                        {item.quantity}
-                                        <AiFillPlusCircle
-                                            className="ml-2 cursor-pointer"
-                                            onClick={() => increaseQuantity(item)}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="font-thin mt-2 flex items-center ">
-                                    <span className="font-semibold">Price: ${item.productPrize * item.quantity}</span>
-                                    <button
-                                        className="absolute right-24 text-lg text-pink-500 ml-3 hover:text-black rounded hover:bg-pink-300 p-2"
-                                        onClick={() => removeFromCart(item.id)}
-                                    >
-                                        <MdDeleteForever />
-                                    </button>
-                                </div>
-                            </li>
-                        ))}
+                    <ol className="list-decimal ">
+                        {Object.keys(Cart).length === 0 && (
+                            <div className=" mt-6 text-lg font-semibold">
+                                Your Cart is Empty!
+                            </div>
+                        )}
+                        {Object.keys(Cart).map((k) => {
+                            return (
+                                <>
+                                    <li key={Cart[k].id}>
+                                        <div className="flex items-start mt-9 mr-2">
+                                            <div className="w-2/3 text-start font-semibold">
+                                                {Cart[k].name}
+                                            </div>
+                                            <div className="inline-flex items-center justify-center">
+                                                <AiFillMinusCircle
+                                                    onClick={() => {
+                                                        deleteCart(k, 1, Cart[k].price, Cart[k].name);
+                                                    }}
+                                                    className="mr-2 cursor-pointer"
+                                                />
+                                                {Cart[k].qty}
+                                                <AiFillPlusCircle
+                                                    onClick={() => {
+                                                        addToCart(k, 1, Cart[k].price, Cart[k].name);
+                                                    }}
+                                                    className="ml-2 cursor-pointer"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="font-thin mt-2 flex items-center ">
+                                            <span className="font-semibold">Price :</span>
+                                            {Number(Cart[k].price) * Number(Cart[k].qty) + "$"}
+
+                                            <button
+                                                className="absolute right-24 text-lg text-pink-500
+                                                ml-3 hover:text-black rounded hover:bg-pink-300 p-2">
+                                                <MdDeleteForever />
+                                            </button>
+                                        </div>
+                                    </li>
+                                </>
+                            );
+                        })}
                     </ol>
 
                     <button className=" text-white ml-3 bg-pink-500 rounded-md p-2 mt-3">
@@ -183,6 +184,7 @@ function Navbar() {
                     </button>
 
                     <button
+                        onClick={clearCart}
                         className="text-white ml-3 bg-pink-500 rounded hover:bg-pink-300 p-2 mt-3"
                     >
                         Clear Cart

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ThreeDots } from 'react-loader-spinner'
-export default function Example() {
+export default function Home({ addToCart }) {
   const [fetchedData, setFetchedData] = useState([]);
   useEffect(() => {
     const products = async () => {
@@ -19,7 +19,6 @@ export default function Example() {
     };
     products();
   },);
-
 
   if (!fetchedData.length) {
     return (
@@ -71,7 +70,9 @@ export default function Example() {
                     <p className="mt-1">{'$'}<span className="font-semibold">{`${items.productPrize}`}</span></p>
                   </div>
                   <div className="flex items-center">
-                    <button onClick={() => (items)} className="bg-pink-500 text-white px-3 py-1 rounded-full hover:bg-pink-700">
+                    <button onClick={() => {
+                      addToCart(Home, 1, items.title, items.productPrize);
+                    }} className="bg-pink-500 text-white px-3 py-1 rounded-full hover:bg-pink-700">
                       Add to Cart
                     </button>
                   </div>
