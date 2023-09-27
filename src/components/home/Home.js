@@ -39,6 +39,7 @@ export default function Example() {
       </div>
     )
   }
+
   return (
     <section className="text-gray-600 body-font">
       <div className="container px-5 py-24 mx-auto">
@@ -69,7 +70,11 @@ export default function Example() {
                     </h2>
                     <p className="mt-1">{'$'}<span className="font-semibold">{`${items.productPrize}`}</span></p>
                   </div>
-                  <div className=" text-start">{items.color}</div>
+                  <div className="flex items-center">
+                    <button onClick={() => (items)} className="bg-pink-500 text-white px-3 py-1 rounded-full hover:bg-pink-700">
+                      Add to Cart
+                    </button>
+                  </div>
                 </div>
               </div>
             );

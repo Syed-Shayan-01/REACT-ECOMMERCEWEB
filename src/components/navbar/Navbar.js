@@ -66,6 +66,27 @@ function Navbar() {
         }
     };
 
+    const increaseQuantity = (item) => {
+        const updatedCart = [...CartData];
+        const itemIndex = updatedCart.findIndex(i => i.id === item.id);
+        updatedCart[itemIndex].quantity += 1;
+        setCartData(updatedCart);
+    };
+
+    const decreaseQuantity = (item) => {
+        console.log(`Decreasing quantity for item with id ${item.id}`);
+        const updatedCart = [...CartData];
+        const itemIndex = updatedCart.find(i => i.id === item.id);
+        if (updatedCart[itemIndex].quantity > 1) {
+            updatedCart[itemIndex].quantity -= 1;
+        }
+        setCartData(updatedCart);
+    };
+
+    const removeFromCart = (itemId) => {
+        const updatedCart = CartData.find(item => item.id !== itemId);
+        setCartData(updatedCart);
+    };
     return (
         <nav className="flex shadow-xl items-center justify-between flex-wrap p-6">
             <div className="flex items-center mr-6 lg:mr-72">
@@ -124,40 +145,37 @@ function Navbar() {
                     >
                         <MdCancel />
                     </span>
-                    {CartData.length === 0 && <div className='p-4 font-bold'>Your Cart Data is Not Available!</div>}
-                    <ol className="list-decimal ">
-                        {CartData.map((k) => {
-                            return (
-                                <>
-                                    <li>
-                                        <div className="flex items-start mt-9 mr-2">
-                                            <div className="w-2/3 text-start font-semibold">
-                                                {CartData.title}
-                                            </div>
-                                            <div className="inline-flex items-center justify-center">
-                                                <AiFillMinusCircle
-
-                                                    className="mr-2 cursor-pointer"
-                                                />
-                                                1
-                                                <AiFillPlusCircle
-
-                                                    className="ml-2 cursor-pointer"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="font-thin mt-2 flex items-center ">
-                                            <span className="font-semibold">Price : ${CartData.productPrize}</span>
-                                            <button className=" absolute right-24 text-lg
-                        text-pink-500 ml-3 hover:text-black rounded
-                        hover:bg-pink-300 p-2">
-                                                <MdDeleteForever />
-                                            </button>
-                                        </div>
-                                    </li >
-                                </>
-                            )
-                        })}
+                    {CartData.length === 0 && <div className='p-4 font-bold'>Your Cart is Empty!</div>}
+                    <ol className="list-decimal">
+                        {CartData.map((item) => (
+                            <li key={item.id}>
+                                <div className="flex items-start mt-9 mr-2">
+                                    <div className="w-2/3 text-start font-semibold">
+                                        {item.title}
+                                    </div>
+                                    <div className="inline-flex items-center justify-center">
+                                        <AiFillMinusCircle
+                                            className="mr-2 cursor-pointer"
+                                            onClick={() => decreaseQuantity(item)}
+                                        />
+                                        {item.quantity}
+                                        <AiFillPlusCircle
+                                            className="ml-2 cursor-pointer"
+                                            onClick={() => increaseQuantity(item)}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="font-thin mt-2 flex items-center ">
+                                    <span className="font-semibold">Price: ${item.productPrize * item.quantity}</span>
+                                    <button
+                                        className="absolute right-24 text-lg text-pink-500 ml-3 hover:text-black rounded hover:bg-pink-300 p-2"
+                                        onClick={() => removeFromCart(item.id)}
+                                    >
+                                        <MdDeleteForever />
+                                    </button>
+                                </div>
+                            </li>
+                        ))}
                     </ol>
 
                     <button className=" text-white ml-3 bg-pink-500 rounded-md p-2 mt-3">
