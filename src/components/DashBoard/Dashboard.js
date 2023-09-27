@@ -42,7 +42,7 @@ const Dashboard = () => {
   }
   return (
     <>
-      <form className='lg:p-32 p-20' onSubmit={handleSubmit}>
+      <form className='lg:p-32' onSubmit={handleSubmit}>
         <div className="mb-2">
           <label className="text-xl text-gray-600">
             Title <span className="text-red-400">*</span>
