@@ -9,7 +9,7 @@ import Index from './components/index';
 import { useEffect } from 'react';
 
 function App() {
-  useEffect(() => {
+  useEffect(() => {   // add title in react app
     document.title = 'Ecommerce.com'
   }, [])
 

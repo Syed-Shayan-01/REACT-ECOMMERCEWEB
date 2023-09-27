@@ -22,21 +22,22 @@ export default function Example() {
 
 
   if (!fetchedData.length) {
-    return <div className="text-[4rem] font-bold flex justify-center  mt-52 text-pink-500">
-      Loading
-      <span className=" mt-6">
-        <ThreeDots
-          height="80"
-          width="130"
-          radius="9"
-          color="#FF1493"
-          ariaLabel="three-dots-loading"
-          wrapperStyle={{}}
-          wrapperClassName=""
-          visible={true}
-        />
-      </span>
-    </div>
+    return (
+      <div className=" font-bold flex justify-center items-center mt-52 text-pink-500">
+        <span className="text-[4rem]">Loading</span>
+        <span className="mt-6 max-md:w-32">
+          <ThreeDots
+            height="80"
+            width="130"
+            color="#FF1493"
+            ariaLabel="three-dots-loading"
+            wrapperStyle={{}}
+            wrapperClassName=""
+            visible={true}
+          />
+        </span>
+      </div>
+    )
   }
   return (
     <section className="text-gray-600 body-font">

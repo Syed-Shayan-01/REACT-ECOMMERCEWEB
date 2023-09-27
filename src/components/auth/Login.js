@@ -5,7 +5,7 @@ import { useState } from "react";
 import { auth } from '../../config/firebase'
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { ThreeDots } from "react-loader-spinner";
+import Logo from "../logo/Logo";
 export default function Example() {
     const [Email, setEmail] = useState('')
     const [password, setpassword] = useState('');
@@ -27,14 +27,10 @@ export default function Example() {
     }
     return (
         <>
-            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-20 lg:px-8">
 
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <img
-                        className="mx-auto h-10 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=pink&shade=600"
-                        alt="Your Company"
-                    />
+                    <Logo text={'Eccomerce.com'} />
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9
                     tracking-tight text-gray-900">
                         Sign in to your account
