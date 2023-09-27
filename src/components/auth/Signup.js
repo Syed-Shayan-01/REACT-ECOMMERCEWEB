@@ -5,6 +5,8 @@ import { useState } from "react";
 import { auth } from '../../config/firebase'
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function Signup() {
     const [firstName, setfirstName] = useState('')
     const [lastName, setlastName] = useState('')
@@ -19,17 +21,47 @@ export default function Signup() {
             createUserWithEmailAndPassword(auth, Email, password)
                 .then((userCredential) => {
                     // Signed in 
-                    if(userCredential){
-                     alert('success')
+                    if (userCredential) {
+                        toast.success('Signup Successfuly', {
+                            position: "top-left",
+                            autoClose: 1400,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                        });
+                        setTimeout(() => {
+                            navigate('/login')
+                        }, 2000)
                     }
-                    navigate('/login')
+
                 }).catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
-                    console.log(errorMessage)
+                    toast.error(errorMessage, {
+                        position: "top-left",
+                        autoClose: 1400,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
                 });
         } else {
-            alert("Please First Name Last Name check")
+            toast.error('firstName > 3 & lastName > 4', {
+                position: "top-left",
+                autoClose: 1400,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         }
     }
     return (
@@ -159,6 +191,18 @@ export default function Signup() {
                     </p>
                 </div>
             </div>
+            <ToastContainer
+                position="top-left"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </>
     )
 }

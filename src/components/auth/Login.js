@@ -6,22 +6,48 @@ import { auth } from '../../config/firebase'
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Logo from "../logo/Logo";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function Example() {
     const [Email, setEmail] = useState('')
     const [password, setpassword] = useState('');
     const navigate = useNavigate();
-
     const formSubmit = (e) => {
         e.preventDefault();
         console.log(Email, password)
 
         signInWithEmailAndPassword(auth, Email, password)
             .then((userCredential) => {
-                navigate('/')
+                const user = userCredential;
+                if (user) {
+                    toast.success('Login Successfuly', {
+                        position: "top-left",
+                        autoClose: 1400,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                    setTimeout(() => {
+                        navigate('/')
+                    },2000)
+                }
+
             }).catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                console.log(errorMessage)
+                toast.error(errorMessage, {
+                    position: "top-left",
+                    autoClose: 1400,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
             });
 
     }
@@ -117,6 +143,19 @@ export default function Example() {
                 </div>
 
             </div>
+
+            <ToastContainer
+                position="top-left"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </>
     )
 }
