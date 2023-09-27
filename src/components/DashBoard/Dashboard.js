@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import Button from '../button/Button';
 const Dashboard = () => {
   const [title, setTitle] = useState('');
@@ -20,15 +22,28 @@ const Dashboard = () => {
           body: JSON.stringify({ title, productDetails, productImages, productPrize })
         });
       if (response.ok) {
-        alert('Items Added Successfuly')
+        toast.success('Items Added Successfuly', {
+          position: "top-right",
+          autoClose: 1400,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setTitle('');
+        setProductDetails('');
+        setProductImages('');
+        setProductPrize('');
       }
     }
 
   }
   return (
     <>
-      <form className='lg:p-32 p-6' onSubmit={handleSubmit}>
-        <div className="mb-4">
+      <form className='lg:p-32 p-20' onSubmit={handleSubmit}>
+        <div className="mb-2">
           <label className="text-xl text-gray-600">
             Title <span className="text-red-400">*</span>
           </label>
@@ -45,7 +60,7 @@ const Dashboard = () => {
           />
         </div>
 
-        <div className='flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4'>
+        <div className='flex flex-col mb-2 md:flex-row space-y-4 md:space-y-0 md:space-x-4'>
           <div className="w-full md:w-1/2">
             <div className="relative">
               <label className="text-xl text-gray-600">
@@ -107,6 +122,18 @@ const Dashboard = () => {
             hover:bg-white w-full text-center">{"Hello"}</button>
         </div>
       </form>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   )
 }
