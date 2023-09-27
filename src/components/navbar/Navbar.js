@@ -112,7 +112,8 @@ function Navbar({ Cart,
 
                 <div
                     onClick={crtControl}
-                    className="SideBar cursor-pointer text-xl items-center"
+                    className="SideBar cursor-pointer mr-6 hover:text-pink-500
+                     text-2xl items-center"
                 >
                     <AiOutlineShoppingCart />
                 </div>
@@ -179,19 +180,29 @@ function Navbar({ Cart,
                         })}
                     </ol>
 
-                    <button className=" text-white ml-3 bg-pink-500 rounded-md p-2 mt-3">
-                        <Link href={`/CheckOut/CheckOut`}>Check Out</Link>
-                    </button>
+                    {Object.keys(Cart).length === 0 && <button disabled
+                        className=" text-white ml-3 bg-gray-500 rounded-md p-2 mt-3">
+                        Check Out
+                    </button>}
 
-                    <button
+                    {Object.keys(Cart).length > 0 && <button
+                        className=" text-white ml-3 bg-pink-500 rounded-md p-2 mt-3">
+                        Check Out
+                    </button>}
+                    {Object.keys(Cart).length === 0 && <button
+                        className="text-white ml-3 bg-gray-500 rounded p-2 mt-3"
+                    >
+                        Clear Cart
+                    </button>}
+                    {Object.keys(Cart).length > 0 && <button
                         onClick={clearCart}
                         className="text-white ml-3 bg-pink-500 rounded hover:bg-pink-300 p-2 mt-3"
                     >
                         Clear Cart
-                    </button>
+                    </button>}
                 </div>
                 {/* Login Button */}
-                {Auth && <button onClick={handleSignOut} >sign Out</button>}
+                {Auth && <span onClick={handleSignOut}><Button>Sign Out</Button></span>}
 
                 {!Auth && <Link to={'/login'}>
                     <Button>Login</Button>
