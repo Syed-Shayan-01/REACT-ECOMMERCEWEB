@@ -6,8 +6,13 @@ import Home from './components/home/Home';
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import Index from './components/index';
+import { useEffect } from 'react';
 
 function App() {
+  useEffect(() => {
+    document.title = 'Ecommerce.com'
+  }, [])
+
   return (
     <div>
       <BrowserRouter basename="/">
