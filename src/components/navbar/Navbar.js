@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import Logo from '../logo/Logo';
 import Button from '../button/Button';
 import {
@@ -12,16 +12,13 @@ import { Link } from 'react-router-dom';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../../config/firebase';
 import { useNavigate } from 'react-router-dom';
-function Navbar({ Cart,
-    addToCart,
-    clearCart,
-    deleteCart,
-    SubTotal,
-    removeCart, }) {
+import CartContext from '../../context/CartContext';
+function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [CartData, setCartData] = useState([]);
     const [Auth, setAuth] = useState(null);
     const navigate = useNavigate();
+    const { Cart, addToCart, clearCart, deleteCart, removeCart } = useContext(CartContext);
     useEffect(() => {
         const products = async () => {
             try {
@@ -146,19 +143,19 @@ function Navbar({ Cart,
                                     <li key={Cart[k].id}>
                                         <div className="flex items-start mt-9 mr-2">
                                             <div className="w-2/3 text-start font-semibold">
-                                                {Cart[k].name}
+                                                {Cart[k].title}
                                             </div>
                                             <div className="inline-flex items-center justify-center">
                                                 <AiFillMinusCircle
                                                     onClick={() => {
-                                                        deleteCart(k, 1, Cart[k].price, Cart[k].name);
+                                                        deleteCart(k, 1, Cart[k].productPrize, Cart[k].title);
                                                     }}
                                                     className="mr-2 cursor-pointer"
                                                 />
                                                 {Cart[k].qty}
                                                 <AiFillPlusCircle
                                                     onClick={() => {
-                                                        addToCart(k, 1, Cart[k].price, Cart[k].name);
+                                                        addToCart(k, 1, Cart[k].productPrize, Cart[k].title);
                                                     }}
                                                     className="ml-2 cursor-pointer"
                                                 />
@@ -166,12 +163,14 @@ function Navbar({ Cart,
                                         </div>
                                         <div className="font-thin mt-2 flex items-center ">
                                             <span className="font-semibold">Price :</span>
-                                            {Number(Cart[k].price) * Number(Cart[k].qty) + "$"}
+                                            {Number(Cart[k].productPrize) * Cart[k].qty + "$"}
 
                                             <button
                                                 className="absolute right-24 text-lg text-pink-500
                                                 ml-3 hover:text-black rounded hover:bg-pink-300 p-2">
-                                                <MdDeleteForever />
+                                                <MdDeleteForever onClick={() => {
+                                                    clearCart()
+                                                }} />
                                             </button>
                                         </div>
                                     </li>

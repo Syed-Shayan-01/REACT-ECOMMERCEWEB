@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { ThreeDots } from 'react-loader-spinner'
-export default function Home({ addToCart }) {
+import CartContext from "../../context/CartContext";
+export default function Home() {
   const [fetchedData, setFetchedData] = useState([]);
+  const { addToCart } = useContext(CartContext);
+  const { AddProducts } = useParams();
   useEffect(() => {
     const products = async () => {
       try {
@@ -71,7 +74,7 @@ export default function Home({ addToCart }) {
                   </div>
                   <div className="flex items-center">
                     <button onClick={() => {
-                      addToCart(Home, 1, items.title, items.productPrize);
+                      addToCart(AddProducts, 1, items.title, items.productPrize,);
                     }} className="bg-pink-500 text-white px-3 py-1 rounded-full hover:bg-pink-700">
                       Add to Cart
                     </button>
